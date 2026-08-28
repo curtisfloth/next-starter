@@ -1,4 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# next-starter
+
+**This is a template repository.** Start a new project from it with:
+
+```bash
+gh repo create my-app --template curtisfloth/next-starter --private --clone
+```
+
+(Or press **Use this template** on GitHub. `--template` is the flag you will
+forget; plain `gh repo create` does not copy anything.)
+
+Then, in the new project:
+
+```bash
+pnpm install && cp .env.example .env && pnpm check
+```
+
+Fill in `.env` — `pnpm check` fails until every variable in `.env.example` has a
+value. The landing page and the `notes` example slice are meant to be deleted:
+run `node scripts/cleanup.ts` when you no longer need them.
+
+---
+
+This project was bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 

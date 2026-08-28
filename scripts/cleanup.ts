@@ -32,6 +32,10 @@ const SLICE_PATHS: readonly string[] = [
   "src/features/notes",
   "tests/notes-schema.test.ts",
   "tests/notes-store.test.ts",
+  // The landing page exists to advertise the slice and link to it, so it goes
+  // at the same time. The build is fine without a `/` route — only
+  // `/_not-found` remains — but the site root will 404 until you add your own.
+  "src/app/page.tsx",
 ];
 
 /** Directories scanned when deciding whether a UI component is still used. */
@@ -197,6 +201,7 @@ if (dryRun) {
   console.log("\nDry run — nothing was deleted.");
 } else {
   console.log("\nThe notes slice is gone. Run `pnpm check` to confirm the tree is clean.");
+  console.log("\nsrc/app/page.tsx went with it, so `/` now 404s. Add your own page.tsx.");
   console.log(
     [
       "",
