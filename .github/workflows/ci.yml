@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    env:
+      # src/env.ts validates these; next build fails without them.
+      APP_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_NAME: Nextjs Skeleton
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # ---- Blocking ----------------------------------------------------
+      - name: Check (typecheck + oxlint + build)
+        run: pnpm check
+
+      - name: Probe (linter regression test)
+        run: pnpm probe
+
+      - name: Test
+        run: pnpm test
+
+      # ---- Advisory ----------------------------------------------------
+      # ESLint runs in parallel with Oxlint for two weeks to surface parity
+      # gaps. It must never fail CI: the script swallows its exit code and
+      # continue-on-error is a second safety net. Read the output in the log.
+      - name: ESLint parity report (advisory, non-blocking)
+        if: always()
+        continue-on-error: true
+        run: pnpm lint:eslint
